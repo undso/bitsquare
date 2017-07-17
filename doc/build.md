@@ -75,7 +75,7 @@ For Mac OSX, you will need to set JAVA_HOME as:
 
 
 ### Protobuf
-Note that Bisq use protobuf during maven build https://github.com/google/protobuf/releases
+Note that Bisq use protobuf during maven build. Installation is done via the maven build.
 
 ### 2.1 Increase the Intellij Idea Code insight limit, because it breaks on the generated protobuffer files:
 Go to Help > Edit custom properties => paste the following line:
@@ -100,13 +100,14 @@ It is not needed for a normal user to run such a "full node" but for the build i
     
     $ cd ..
     $ git clone https://github.com/bitsquare/libdohj.git
-    $ cd bitcoinj
+    $ cd libdohj
     $ mvn clean install -DskipTests -Dmaven.javadoc.skip=true
         
     $ cd ..
     $ git clone https://github.com/bitsquare/btcd-cli4j.git
     $ cd btcd-cli4j
     $ mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+    $ cd ..
     
 Build bisq
 -----------------
@@ -114,7 +115,8 @@ Build bisq
 ### 1. Build final bisq jar
 
 Now we have all prepared to build the correct bisq jar.
-
+   
+    $ cd bisq
     $ mvn clean package verify -DskipTests -Dmaven.javadoc.skip=true
 
 When the build completes, you will find an executable jar: `gui/target/shaded.jar` and a ./lib directory.
@@ -125,14 +127,14 @@ To run it use:
 Build binaries
 -----------------
 
-If you want to build the binaries check out the build scripts under the package directory. copy shaded.jar and the lib directory.
+If you want to build the binaries check out the build scripts under the package directory. Use the shaded.jar and the lib directory.
 
 
 DAO full node
 -----------------
 If you want to run your own BSQ transaction verification node you have to run Bitcoin Core with RPC enabled and 
 use dedicated program arguments for the bisq node.
-See the rpc.md doc in the same directory.
+See https://github.com/bitsquare/bitsquare/blob/master/doc/rpc.md for more details.
 
 
 Development mode
@@ -143,13 +145,13 @@ and how to use [regtest](https://github.com/bitsquare/bitsquare/wiki/How-to-use-
 
 Here are example program arguments for using regtest with localhost environment (not using Tor):
 
-    $ java -jar seednode/target/SeedNode.jar --baseCryptoNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:2002 --nodePort=2002 --appName=bisq_seed_node_localhost_2002
+    $ java -jar seednode/target/SeedNode.jar --baseCurrencyNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:2002 --nodePort=2002 --appName=bisq_seed_node_localhost_2002
 
-    $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:2222 --nodePort=2222 --appName=bisq-Local-Regtest-Arbitrator
+    $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:2222 --nodePort=2222 --appName=bisq-Local-Regtest-Arbitrator
 
-    $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:3333 --nodePort=3333 --appName=bisq-Local-Regtest-Alice
+    $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:3333 --nodePort=3333 --appName=bisq-Local-Regtest-Alice
 
-    $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:4444 --nodePort=4444 --appName=bisq-Local-Regtest-Bob
+    $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --useLocalhost=true --myAddress=localhost:4444 --nodePort=4444 --appName=bisq-Local-Regtest-Bob
 
 
 Running local seed node with Tor and RegTest
@@ -158,7 +160,7 @@ Running local seed node with Tor and RegTest
 If you want to run locally a seed node via Tor you need to add your seed node's hidden service address to the SeedNodesRepository.java class.
 You can find the hidden service address after you started once a seed node. Start it with a placeholder address like:
 
-    $ java -jar seednode/target/SeedNode.jar --baseCryptoNetwork=BTC_REGTEST --nodePort=8002 --myAddress=xxxxxxxx.onion:8002 --appName=bisq_seed_node_xxxxxxxx.onion_8000
+    $ java -jar seednode/target/SeedNode.jar --baseCurrencyNetwork=BTC_REGTEST --nodePort=8002 --myAddress=xxxxxxxx.onion:8002 --appName=bisq_seed_node_xxxxxxxx.onion_8000
 
 Once the hidden service is published (check console output) quit the seed node and copy the hidden service address from the console output.
 Alternatively you can navigate to the application directory and open bisq_seed_node_xxxxxxx.onion_8002/tor/hiddenservice/hostname.
@@ -170,13 +172,13 @@ Here are example program arguments for using regtest and using the Tor network (
 
      $ java -jar seednode/target/SeedNode.jar ewdkppp3vicnbgqt.onion:8002 2 50
 
-     $ java -jar seednode/target/SeedNode.jar --baseCryptoNetwork=BTC_REGTEST --nodePort=8002 --myAddress=ewdkppp3vicnbgqt.onion:8002 --appName=bisq_seed_node_ewdkppp3vicnbgqt.oinion_8002
+     $ java -jar seednode/target/SeedNode.jar --baseCurrencyNetwork=BTC_REGTEST --nodePort=8002 --myAddress=ewdkppp3vicnbgqt.onion:8002 --appName=bisq_seed_node_ewdkppp3vicnbgqt.oinion_8002
 
-     $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --myAddress=localhost:2222 --nodePort=2222 --appName=bisq-Local-Regtest-Arbitrator
+     $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --myAddress=localhost:2222 --nodePort=2222 --appName=bisq-Local-Regtest-Arbitrator
 
-     $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --myAddress=localhost:3333 --nodePort=3333 --appName=bisq-Local-Regtest-Alice
+     $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --myAddress=localhost:3333 --nodePort=3333 --appName=bisq-Local-Regtest-Alice
 
-     $ java -jar gui/target/shaded.jar --baseCryptoNetwork=BTC_REGTEST --myAddress=localhost:4444 --nodePort=4444 --appName=bisq-Local-Regtest-Bob
+     $ java -jar gui/target/shaded.jar --baseCurrencyNetwork=BTC_REGTEST --myAddress=localhost:4444 --nodePort=4444 --appName=bisq-Local-Regtest-Bob
 
 
 Problems?
